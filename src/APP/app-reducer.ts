@@ -1,4 +1,4 @@
-import {SetIsLoggedIn, setIsLoggedInAC} from "../FEATURES/Login/auth-reducer";
+import {setIsLoggedInAC} from "../FEATURES/Login/auth-reducer";
 import {authAPI} from "../API/todolist-api";
 import {ThunkType} from "./store";
 
@@ -53,7 +53,7 @@ export const initialiseAppTC = ():ThunkType => dispatch => {
     authAPI.me()
         .then(res => {
             if(res.data.resultCode === 0){
-                dispatch(setIsLoggedInAC(true))
+                dispatch(setIsLoggedInAC({value: true}))
             }
             dispatch(setAppInitializedAC(true))
         })
@@ -63,4 +63,4 @@ export type ActionsTypesAppReducer =
     | SetAppErrorActionType
     | SetAppStatusActionType
     | SetAppInitializedActionType
-    | SetIsLoggedIn
+    // | SetIsLoggedIn
