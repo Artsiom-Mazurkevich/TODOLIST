@@ -17,11 +17,9 @@ import {TodolistsList} from "../FEATURES/TodolistsList/TodolistsList";
 import {Login} from "../FEATURES/Login/Login";
 // import {CircularProgress} from "@mui/material";
 
-type PropsType = {
-  demo?: boolean
-}
 
-function App({demo = false}: PropsType) {
+
+function App() {
   const status = useAppSelector((state) => state.app.status)
   const isInitialized = useAppSelector((state) => state.app.isInitialized)
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
@@ -57,7 +55,7 @@ function App({demo = false}: PropsType) {
           <Container fixed>
             <Routes>
               <Route  path={"/"}
-                      element={<TodolistsList demo={demo}/>}/>
+                      element={<TodolistsList/>}/>
               <Route path={"/login"} element={<Login/>}/>
               <Route path="*" element={<h1>404: PAGE NOT FOUND</h1>}/>
             </Routes>

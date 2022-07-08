@@ -15,11 +15,8 @@ import {
     FilterValuesType, removeTodolistTC
 } from "./todolists-reducer";
 
-type PropsType = {
-    demo?: boolean
-}
 
-export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
+export const TodolistsList = () => {
     const todolists = useAppSelector(state => state.todolists)
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
@@ -27,12 +24,12 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        if (demo || !isLoggedIn) {
+        if (!isLoggedIn) {
             return;
         }
         const thunk = fetchTodolistsTC()
         dispatch(thunk)
-    }, [dispatch,demo,isLoggedIn])
+    }, [dispatch,isLoggedIn])
 
     const removeTask = useCallback(function (id: string, todolistId: string) {
         const thunk = removeTaskTC(id, todolistId)
@@ -98,7 +95,6 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
                                 removeTodolist={removeTodolist}
                                 changeTaskTitle={changeTaskTitle}
                                 changeTodolistTitle={changeTodolistTitle}
-                                demo={demo}
                             />
                         </Paper>
                     </Grid>

@@ -1,7 +1,7 @@
-import {Dispatch} from "redux";
 import {authAPI, LoginParamType} from "../../API/todolist-api";
 import {setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from "../../APP/app-reducer";
 import {handleServerAppError} from "../../UTILS/error-utils";
+import {ThunkType} from "../../APP/store";
 
 type initialStateType = {
     isLoggedIn: boolean
@@ -10,7 +10,7 @@ const initialState: initialStateType = {
     isLoggedIn: false
 }
 
-export const authReducer = (state: initialStateType = initialState, action: ActionsType): initialStateType => {
+export const authReducer = (state: initialStateType = initialState, action: ActionsTypesAuthReducer): initialStateType => {
     switch (action.type) {
         case "'login/SET-IS-LOGGED-IN":{
             return {...state, isLoggedIn: action.value}
@@ -20,17 +20,21 @@ export const authReducer = (state: initialStateType = initialState, action: Acti
     }
 }
 export type SetIsLoggedIn = ReturnType<typeof setIsLoggedInAC>
-type ActionsType = | SetIsLoggedIn
+export type ActionsTypesAuthReducer = | SetIsLoggedIn
     | SetAppStatusActionType
     | SetAppErrorActionType
+
 
 // actions
 export const setIsLoggedInAC = (value: boolean) => ({type:"'login/SET-IS-LOGGED-IN", value} as const)
 
 
 
+
+
+
 // thunks
-export const loginTC = (data:LoginParamType) => (dispatch: ThunkDispatch) => {
+export const loginTC = (data:LoginParamType): ThunkType => dispatch => {
     dispatch(setAppStatusAC('loading'))
     authAPI.login(data)
         .then(res => {
@@ -52,7 +56,7 @@ export const loginTC = (data:LoginParamType) => (dispatch: ThunkDispatch) => {
 
 
 
-export const logOutTC = () => (dispatch: ThunkDispatch) => {
+export const logOutTC = (): ThunkType => dispatch => {
     dispatch(setAppStatusAC('loading'))
     authAPI.logOut()
         .then(res => {
@@ -71,5 +75,4 @@ export const logOutTC = () => (dispatch: ThunkDispatch) => {
         })
 
 }
-type ThunkDispatch = Dispatch<ActionsType | SetAppStatusActionType | SetAppErrorActionType>
 

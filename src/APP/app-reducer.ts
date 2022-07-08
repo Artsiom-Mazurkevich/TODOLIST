@@ -1,6 +1,6 @@
 import {SetIsLoggedIn, setIsLoggedInAC} from "../FEATURES/Login/auth-reducer";
 import {authAPI} from "../API/todolist-api";
-import {DispatchThunk} from "./store";
+import {ThunkType} from "./store";
 
 const initialState: InitialStateType = {
     status: "idle",
@@ -8,7 +8,7 @@ const initialState: InitialStateType = {
     isInitialized: false
 }
 
-export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+export const appReducer = (state: InitialStateType = initialState, action: ActionsTypesAppReducer): InitialStateType => {
     switch (action.type) {
         case "APP/SET-STATUS":
             return {...state, status: action.status}
@@ -49,7 +49,7 @@ export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
 export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 export type SetAppInitializedActionType = ReturnType<typeof setAppInitializedAC>
 
-export const initialiseAppTC = () => (dispatch:DispatchThunk) => {
+export const initialiseAppTC = ():ThunkType => dispatch => {
     authAPI.me()
         .then(res => {
             if(res.data.resultCode === 0){
@@ -59,7 +59,7 @@ export const initialiseAppTC = () => (dispatch:DispatchThunk) => {
         })
 }
 
-type ActionsType =
+export type ActionsTypesAppReducer =
     | SetAppErrorActionType
     | SetAppStatusActionType
     | SetAppInitializedActionType

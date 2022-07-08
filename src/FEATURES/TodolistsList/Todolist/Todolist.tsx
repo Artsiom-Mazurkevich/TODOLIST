@@ -20,16 +20,15 @@ type PropsType = {
     removeTask: (taskId: string, todolistId: string) => void
     removeTodolist: (id: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
-    demo?: boolean
 }
 
-export const Todolist = React.memo(function ({demo = false, ...props}: PropsType) {
+export const Todolist = React.memo(function (props: PropsType) {
     console.log('Todolist called')
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     const dispatch = useAppDispatch()
     useEffect(() => {
-        if (demo || !isLoggedIn) {
+        if (!isLoggedIn) {
             return
         }
         const thunk = fetchTasksTC(props.todolist.id)

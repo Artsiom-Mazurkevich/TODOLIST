@@ -1,29 +1,29 @@
-import {AnyAction, applyMiddleware, combineReducers, createStore} from 'redux'
-import thunkMiddleware, {ThunkDispatch} from 'redux-thunk'
-import {appReducer} from './app-reducer'
+import {applyMiddleware, combineReducers, legacy_createStore} from 'redux'
+import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk'
+import {ActionsTypesAppReducer, appReducer} from './app-reducer'
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import {tasksReducer} from "../FEATURES/TodolistsList/task-reducer";
-import {todolistsReducer} from "../FEATURES/TodolistsList/todolists-reducer";
-import {authReducer} from "../FEATURES/Login/auth-reducer";
+import {ActionsTypesTasksReducer, tasksReducer} from "../FEATURES/TodolistsList/task-reducer";
+import {ActionsTypesTodolistsReducer, todolistsReducer} from "../FEATURES/TodolistsList/todolists-reducer";
+import {ActionsTypesAuthReducer, authReducer} from "../FEATURES/Login/auth-reducer";
 
-// объединяя reducer-ы с помощью combineReducers,
-// мы задаём структуру нашего единственного объекта-состояния
 const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todolistsReducer,
     app: appReducer,
     auth:authReducer
 })
-// непосредственно создаём store
-export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
-// определить автоматически тип всего объекта состояния
+export const store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
 export type AppRootStateType = ReturnType<typeof rootReducer>
 
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector
-export type DispatchThunk = ThunkDispatch <AppRootStateType, unknown, AnyAction>
-export const useAppDispatch: () => DispatchThunk = useDispatch;
+export type ThunkType<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionsTypes>
+export const useAppDispatch: () => ThunkDispatch<AppRootStateType, void, AppActionsTypes> = useDispatch
 
-// а это, чтобы можно было в консоли браузера обращаться к store в любой момент
+type AppActionsTypes = ActionsTypesAppReducer
+    | ActionsTypesAuthReducer
+    | ActionsTypesTasksReducer
+    | ActionsTypesTodolistsReducer
+
 // @ts-ignore
 window.store = store;
