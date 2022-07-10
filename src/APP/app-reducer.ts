@@ -1,6 +1,7 @@
 import {setIsLoggedInAC} from "../FEATURES/Login/auth-reducer";
 import {authAPI} from "../API/todolist-api";
 import {ThunkType} from "./store";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState: InitialStateType = {
     status: "idle",
@@ -8,7 +9,27 @@ const initialState: InitialStateType = {
     isInitialized: false
 }
 
-export const appReducer = (state: InitialStateType = initialState, action: ActionsTypesAppReducer): InitialStateType => {
+
+
+const slice = createSlice({
+    name: 'app',
+    initialState,
+    reducers: {
+        setAppErrorAC: (state, action:PayloadAction<{error: string | null}>) => {
+            state.error = action.payload.error
+        },
+        setAppStatusAC: (state, action:PayloadAction<{status: RequestStatusType}>) => {
+            state.status = action.payload.status
+        },
+        setAppInitializedAC: (state, action:PayloadAction<{value: boolean}>) => {
+            state.isInitialized = action.payload.value
+        },
+    }
+})
+
+
+export const appReducer = slice.reducer
+/*export const appReducer = (state: InitialStateType = initialState, action: ActionsTypesAppReducer): InitialStateType => {
     switch (action.type) {
         case "APP/SET-STATUS":
             return {...state, status: action.status}
@@ -20,7 +41,7 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
         default:
             return {...state}
     }
-}
+}*/
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed"
 export type InitialStateType = {
@@ -32,22 +53,24 @@ export type InitialStateType = {
     isInitialized: boolean
 }
 
-export const setAppErrorAC = (error: string | null) => ({
-    type: "APP/SET-ERROR",
-    error
-} as const)
-export const setAppStatusAC = (status: RequestStatusType) => ({
-    type: "APP/SET-STATUS",
-    status
-} as const)
-export const setAppInitializedAC = (value: boolean) => ({
-    type: "APP/SET-IS-INITIALIZED",
-    value
-} as const)
+
+
+
+export const {setAppErrorAC, setAppStatusAC, setAppInitializedAC} = slice.actions
+/*export const setAppErrorAC = slice.actions.setAppErrorAC;   // (error: string | null) => ({type: "APP/SET-ERROR", error} as const)
+export const setAppStatusAC = slice.actions.setAppStatusAC;  // (status: RequestStatusType) => ({type: "APP/SET-STATUS", status} as const)
+export const setAppInitializedAC = slice.actions.setAppInitializedAC; // (value: boolean) => ({type: "APP/SET-IS-INITIALIZED", value} as const)*/
 
 export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
 export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 export type SetAppInitializedActionType = ReturnType<typeof setAppInitializedAC>
+
+
+
+
+
+
+
 
 export const initialiseAppTC = ():ThunkType => dispatch => {
     authAPI.me()
@@ -55,7 +78,7 @@ export const initialiseAppTC = ():ThunkType => dispatch => {
             if(res.data.resultCode === 0){
                 dispatch(setIsLoggedInAC({value: true}))
             }
-            dispatch(setAppInitializedAC(true))
+            dispatch(setAppInitializedAC({value: true}))
         })
 }
 

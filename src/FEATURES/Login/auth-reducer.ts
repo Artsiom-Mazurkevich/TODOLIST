@@ -53,12 +53,12 @@ export const {setIsLoggedInAC} = slice.actions
 
 // thunks
 export const loginTC = (data:LoginParamType): ThunkType => dispatch => {
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.login(data)
         .then(res => {
             if (res.data.resultCode === 0) {
                 dispatch(setIsLoggedInAC({value: true}))
-                dispatch(setAppStatusAC("succeeded"))
+                dispatch(setAppStatusAC({status: "succeeded"}))
             } else {
                 handleServerAppError(res.data, dispatch)
             }
@@ -67,16 +67,16 @@ export const loginTC = (data:LoginParamType): ThunkType => dispatch => {
             dispatch(setAppErrorAC(error.message))
         })
         .finally(()=>{
-            dispatch(setAppStatusAC("failed"))
+            dispatch(setAppStatusAC({status: "failed"}))
         })
 }
 export const logOutTC = (): ThunkType => dispatch => {
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.logOut()
         .then(res => {
             if (res.data.resultCode === 0) {
                 dispatch(setIsLoggedInAC({value: false}))
-                dispatch(setAppStatusAC("succeeded"))
+                dispatch(setAppStatusAC({status: "succeeded"}))
             } else {
                 handleServerAppError(res.data, dispatch)
             }
@@ -85,7 +85,7 @@ export const logOutTC = (): ThunkType => dispatch => {
             dispatch(setAppErrorAC(error.message))
         })
         .finally(()=>{
-            dispatch(setAppStatusAC("failed"))
+            dispatch(setAppStatusAC({status: "failed"}))
         })
 
 }

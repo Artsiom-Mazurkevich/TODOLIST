@@ -51,53 +51,53 @@ export const setTodolistsAC = (todolists: Array<TodolistType>) => ({type: 'SET-T
 
 export const fetchTodolistsTC = ():ThunkType => {
     return dispatch => {
-        dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC({status: 'loading'}))
         todolistsAPI.getTodolists()
             .then((res) => {
                 dispatch(setTodolistsAC(res.data))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC({status: 'succeeded'}))
             })
             .catch((error)=>{
                 dispatch(setAppErrorAC(error.message))
             })
             .finally(()=>{
-                dispatch(setAppStatusAC("failed"))
+                dispatch(setAppStatusAC({status: "failed"}))
             })
     }
 }
 export const removeTodolistTC = (todolistId: string):ThunkType => {
     return dispatch => {
         //изменим глобальный статус приложения, чтобы вверху полоса побежала
-        dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC({status: 'loading'}))
         //изменим статус конкретного тудулиста, чтобы он мог задизеблить что надо
         dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
         todolistsAPI.deleteTodolist(todolistId)
             .then((res) => {
                 dispatch(removeTodolistAC(todolistId))
                 //скажем глобально приложению, что асинхронная операция завершена
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC({status: 'succeeded'}))
             })
             .catch((error)=>{
                 dispatch(setAppErrorAC(error.message))
             })
             .finally(()=>{
-                dispatch(setAppStatusAC("failed"))
+                dispatch(setAppStatusAC({status: "failed"}))
             })
     }
 }
 export const addTodolistTC = (title: string):ThunkType => {
     return dispatch => {
-        dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC({status:'loading'}))
         todolistsAPI.createTodolist(title)
             .then((res) => {
                 dispatch(addTodolistAC(res.data.data.item))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC({status: 'succeeded'}))
             })
             .catch((error)=>{
                 dispatch(setAppErrorAC(error.message))
             })
             .finally(()=>{
-                dispatch(setAppStatusAC("failed"))
+                dispatch(setAppStatusAC({status: "failed"}))
             })
     }
 }
@@ -111,7 +111,7 @@ export const changeTodolistTitleTC = (id: string, title: string):ThunkType => {
                 dispatch(setAppErrorAC(error.message))
             })
             .finally(()=>{
-                dispatch(setAppStatusAC("failed"))
+                dispatch(setAppStatusAC({status: "failed"}))
             })
     }
 }
