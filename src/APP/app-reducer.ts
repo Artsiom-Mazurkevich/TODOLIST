@@ -28,6 +28,10 @@ const slice = createSlice({
 })
 
 
+
+
+
+
 export const appReducer = slice.reducer
 /*export const appReducer = (state: InitialStateType = initialState, action: ActionsTypesAppReducer): InitialStateType => {
     switch (action.type) {
@@ -43,6 +47,10 @@ export const appReducer = slice.reducer
     }
 }*/
 
+
+
+
+
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed"
 export type InitialStateType = {
     // происходит ли сейчас взаимодействие с сервером
@@ -56,6 +64,11 @@ export type InitialStateType = {
 
 
 
+
+
+
+
+
 export const {setAppErrorAC, setAppStatusAC, setAppInitializedAC} = slice.actions
 /*export const setAppErrorAC = slice.actions.setAppErrorAC;   // (error: string | null) => ({type: "APP/SET-ERROR", error} as const)
 export const setAppStatusAC = slice.actions.setAppStatusAC;  // (status: RequestStatusType) => ({type: "APP/SET-STATUS", status} as const)
@@ -64,6 +77,10 @@ export const setAppInitializedAC = slice.actions.setAppInitializedAC; // (value:
 export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
 export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 export type SetAppInitializedActionType = ReturnType<typeof setAppInitializedAC>
+
+
+
+
 
 
 
