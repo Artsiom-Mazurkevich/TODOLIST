@@ -8,7 +8,8 @@ import {EditableSpan} from "../../../COMPONENTS/EditableSpan/EditableSpan";
 import {TaskStatuses, TaskType} from "../../../API/todolist-api";
 import {AddItemForm} from "../../../COMPONENTS/AddItemForm/AddItemForm";
 import {useAppDispatch, useAppSelector} from "../../../APP/store";
-import {fetchTasksTC} from "../task-reducer";
+import {fetchTasks} from "../task-reducer";
+
 
 type PropsType = {
     todolist: TodolistDomainType
@@ -31,7 +32,7 @@ export const Todolist = React.memo(function (props: PropsType) {
         if (!isLoggedIn) {
             return
         }
-        const thunk = fetchTasksTC(props.todolist.id)
+        const thunk = fetchTasks(props.todolist.id)
         dispatch(thunk)
     }, [])
 

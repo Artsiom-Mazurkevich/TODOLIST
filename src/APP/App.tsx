@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import LinearProgress from '@mui/material/LinearProgress';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import {ErrorSnackbar} from "../COMPONENTS/ErrorSnackBar/ErrorSnackbar";
 import {Menu} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "./store";
@@ -27,9 +27,9 @@ function App() {
 
     useEffect(() => {
         dispatch(initialiseAppTC())
-    }, [])
+    }, [dispatch])
 
-    const logOutHandler = useCallback(() => dispatch(logOutTC()), [isLoggedIn])
+    const logOutHandler = useCallback(() => dispatch(logOutTC()), [isLoggedIn, dispatch])
 
     if (!isInitialized) {
         return <LinearProgress color="secondary"/>
