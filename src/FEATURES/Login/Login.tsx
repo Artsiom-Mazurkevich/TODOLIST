@@ -7,7 +7,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import {useFormik} from "formik";
+import {FormikConfig, FormikHelpers, useFormik} from "formik";
 import {Navigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../APP/store";
 import {loginTC} from "./auth-reducer";
@@ -18,12 +18,19 @@ type FormikErrorType = {
     rememberMe?:boolean
 }
 
+type FormikValuesType = {
+    email:string
+    password:string
+    rememberMe:boolean
+}
+
+
 export const Login = () => {
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     const dispatch = useAppDispatch()
     const formik = useFormik({
-        validate:(values)=>{
+        validate:(values) => {
             const errors: FormikErrorType = {};
             if (!values.email) {
                 errors.email = 'Required';
@@ -43,8 +50,9 @@ export const Login = () => {
             password: "",
             rememberMe: false
         },
-        onSubmit: values => {
-            dispatch(loginTC(values))
+        onSubmit: async (values:FormikValuesType, formikHelpers:FormikHelpers<FormikValuesType>) => {
+            const res = await dispatch(loginTC(values))
+            formikHelpers.setFieldError('email', 'fake Error')
             // alert(JSON.stringify(values));
         },
     });
