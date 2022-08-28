@@ -59,6 +59,9 @@ export const todolistsAPI = {
 
 
 // types
+
+export type FieldErrorType = {field:string, error: string}
+
 export type TodolistType = {
     id: string
     title: string
@@ -68,7 +71,7 @@ export type TodolistType = {
 export type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
-    fieldsErrors: Array<string>
+    fieldsErrors: Array<FieldErrorType>
     data: D
 }
 

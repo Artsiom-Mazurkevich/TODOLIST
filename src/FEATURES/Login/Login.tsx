@@ -13,15 +13,15 @@ import {useAppDispatch, useAppSelector} from "../../APP/store";
 import {loginTC} from "./auth-reducer";
 
 type FormikErrorType = {
-    email?:string
-    password?:string
-    rememberMe?:boolean
+    email?: string
+    password?: string
+    rememberMe?: boolean
 }
 
 type FormikValuesType = {
-    email:string
-    password:string
-    rememberMe:boolean
+    email: string
+    password: string
+    rememberMe: boolean
 }
 
 
@@ -30,7 +30,7 @@ export const Login = () => {
 
     const dispatch = useAppDispatch()
     const formik = useFormik({
-        validate:(values) => {
+        validate: (values) => {
             const errors: FormikErrorType = {};
             if (!values.email) {
                 errors.email = 'Required';
@@ -40,7 +40,7 @@ export const Login = () => {
 
             if (!values.password) {
                 errors.password = 'Required';
-            } else if (values.password.length < 4 || values.password.length > 20 ) {
+            } else if (values.password.length < 4 || values.password.length > 20) {
                 errors.password = 'Invalid password';
             }
             return errors;
@@ -50,14 +50,19 @@ export const Login = () => {
             password: "",
             rememberMe: false
         },
-        onSubmit: async (values:FormikValuesType, formikHelpers:FormikHelpers<FormikValuesType>) => {
-            const res = await dispatch(loginTC(values))
-            formikHelpers.setFieldError('email', 'fake Error')
+        onSubmit: async (values: FormikValuesType, formikHelpers: FormikHelpers<FormikValuesType>) => {
+            const action = await dispatch(loginTC(values))
+            if (loginTC.rejected.match(action)) {
+                if (action.payload?.fieldsErrors?.length) {
+                    const error = action.payload.fieldsErrors[0]
+                    formikHelpers.setFieldError(error.field, error.error)
+                }
+            }
             // alert(JSON.stringify(values));
         },
     });
 
-    if(isLoggedIn){
+    if (isLoggedIn) {
         return <Navigate to={"/"}/>
     }
 
@@ -67,7 +72,8 @@ export const Login = () => {
                 <FormControl>
                     <FormLabel>
                         <p>To log in get registered
-                            <a href={"https://social-network.samuraijs.com/"} target={"_blank"} rel={"noreferrer"}>here</a>
+                            <a href={"https://social-network.samuraijs.com/"} target={"_blank"}
+                               rel={"noreferrer"}>here</a>
                         </p>
                         <p>or use common test account credentials:</p>
                         <p>Email: free@samuraijs.com</p>
@@ -77,13 +83,15 @@ export const Login = () => {
                         <TextField label="Email"
                                    margin="normal"
                                    {...formik.getFieldProps("email")}/>
-                        {formik.touched.email && formik.errors.email ? <div style={{color:"red"}}>{formik.errors.email}</div> : null}
+                        {formik.touched.email && formik.errors.email ?
+                            <div style={{color: "red"}}>{formik.errors.email}</div> : null}
                         <TextField type="password"
                                    label="Password"
                                    margin="normal"
                                    {...formik.getFieldProps("password")}
                         />
-                        {formik.touched.password && formik.errors.password ? <div style={{color:"red"}}>{formik.errors.password}</div> : null}
+                        {formik.touched.password && formik.errors.password ?
+                            <div style={{color: "red"}}>{formik.errors.password}</div> : null}
                         <FormControlLabel label={"Remember me"}
                                           name="rememberMe"
                                           control={
