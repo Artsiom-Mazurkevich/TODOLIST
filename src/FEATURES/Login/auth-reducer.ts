@@ -27,39 +27,20 @@ export const loginTC = createAsyncThunk<{ isLoggedIn: boolean }, LoginParamType,
     }
 })
 
-
-export const logOutTC_ = (): ThunkType => dispatch => {
-    dispatch(setAppStatusAC({status: 'loading'}))
-    authAPI.logOut()
-        .then(res => {
-            if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedInAC({value: false}))
-                dispatch(setAppStatusAC({status: "succeeded"}))
-            } else {
-                handleServerAppError(res.data, dispatch)
-            }
-        })
-        .catch((error) => {
-            dispatch(setAppErrorAC(error.message))
-        })
-        .finally(() => {
-            dispatch(setAppStatusAC({status: "failed"}))
-        })
-
-}
-
 export const logOutTC = createAsyncThunk('auth/logout', async (param, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
     try {
         const res = await authAPI.logOut()
         if (res.data.resultCode === 0) {
-            thunkAPI.dispatch(setIsLoggedInAC({value: false}))
             thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
+            return;
         } else {
             handleServerAppError(res.data, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue({})
         }
-    } catch (e) {
-
+    } catch (e: any) {
+        handleServerNetworkError(e, thunkAPI.dispatch)
+        return thunkAPI.rejectWithValue({})
     }
 })
 
@@ -78,31 +59,16 @@ const slice = createSlice({
         builder.addCase(loginTC.fulfilled, (state, action) => {
             state.isLoggedIn = action.payload.isLoggedIn
         })
+        builder.addCase(logOutTC.fulfilled, (state) => {
+            state.isLoggedIn = false
+        })
     }
 })
-export const authReducer = slice.reducer
 
+
+export const authReducer = slice.reducer
 export const {setIsLoggedInAC} = slice.actions
 
 
-// thunks
-// export const loginTC = (data: LoginParamType): ThunkType => dispatch => {
-//     dispatch(setAppStatusAC({status: 'loading'}))
-//     authAPI.login(data)
-//         .then(res => {
-//             if (res.data.resultCode === 0) {
-//                 dispatch(setIsLoggedInAC({value: true}))
-//                 dispatch(setAppStatusAC({status: "succeeded"}))
-//             } else {
-//                 handleServerAppError(res.data, dispatch)
-//             }
-//         })
-//         .catch((error) => {
-//             dispatch(setAppErrorAC(error.message))
-//         })
-//         .finally(() => {
-//             dispatch(setAppStatusAC({status: "failed"}))
-//         })
-// }
 
 
