@@ -1,4 +1,4 @@
-import {AnyAction, applyMiddleware, combineReducers, legacy_createStore} from 'redux'
+import {AnyAction, combineReducers} from 'redux'
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {ActionsTypesAppReducer, appReducer} from './app-reducer'
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
@@ -14,9 +14,6 @@ const rootReducer = combineReducers({
     auth: authReducer
 })
 
-
-
-// export const store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware));
 export const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunkMiddleware)

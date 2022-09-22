@@ -42,12 +42,12 @@ export const TodolistsList = () => {
     }, [dispatch])
 
     const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
-        const thunk = updateTaskTC(id, {status}, todolistId)
+        const thunk = updateTaskTC({taskId: id, domainModel: {status}, todolistId})
         dispatch(thunk)
     }, [dispatch])
 
     const changeTaskTitle = useCallback(function (id: string, newTitle: string, todolistId: string) {
-        const thunk = updateTaskTC(id, {title: newTitle}, todolistId)
+        const thunk = updateTaskTC({taskId:id, domainModel:{title:newTitle}, todolistId})
         dispatch(thunk)
     }, [dispatch])
 

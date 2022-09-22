@@ -3,8 +3,7 @@ import {
     fetchTasks,
     removeTaskTC,
     tasksReducer,
-    TasksStateType,
-    updateTaskAC
+    TasksStateType, updateTaskTC,
 } from "../FEATURES/TodolistsList/task-reducer";
 import {TaskPriorities, TaskStatuses} from "../API/todolist-api";
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from "../FEATURES/TodolistsList/todolists-reducer";
@@ -91,7 +90,8 @@ test('correct task should be added to correct array', () => {
 
 
 test('status of specified task should be changed', () => {
-    const action = updateTaskAC({taskId: '2', todolistId: 'todolistId2', model: {status: TaskStatuses.New}})
+    const updateModel = {taskId: '2', todolistId: 'todolistId2', domainModel: {status: TaskStatuses.New}};
+    const action = updateTaskTC.fulfilled(updateModel, 'requestId', updateModel)
 
     const endState = tasksReducer(startState, action)
 
@@ -101,7 +101,8 @@ test('status of specified task should be changed', () => {
 
 
 test('title of specified task should be changed', () => {
-    const action = updateTaskAC({taskId: '2', todolistId: 'todolistId2', model: {title: 'Hey'}})
+    const updateModel = {taskId: '2', todolistId: 'todolistId2', domainModel: {title: 'Hey'}};
+    const action = updateTaskTC.fulfilled(updateModel, 'requestId', updateModel)
     const endState = tasksReducer(startState, action)
 
     expect(endState['todolistId2'][1].title).toBe('Hey')
