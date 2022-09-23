@@ -1,6 +1,11 @@
 import {
-    addTodolistAC, changeTodolistEntityStatusAC, changeTodolistFilterAC, changeTodolistTitleAC, FilterValuesType,
-    removeTodolistAC, setTodolistsAC,
+    addTodolistAC,
+    changeTodolistEntityStatusAC,
+    changeTodolistFilterAC,
+    changeTodolistTitleAC,
+    fetchTodolistsTC,
+    FilterValuesType,
+    removeTodolistAC,
     TodolistDomainType,
     todolistsReducer
 } from "../FEATURES/TodolistsList/todolists-reducer";
@@ -65,7 +70,7 @@ test('correct filter of todolist should be changed', () => {
 
 
 test('todolists should be added', () => {
-    const endState = todolistsReducer([], setTodolistsAC({todolists: startState}))
+    const endState = todolistsReducer([], fetchTodolistsTC.fulfilled({todolists: startState}, 'requestId'))
     expect(endState.length).toBe(2)
 })
 

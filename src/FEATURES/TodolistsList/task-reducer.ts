@@ -2,11 +2,9 @@ import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelTyp
 import {AppRootStateType} from "../../APP/store";
 import {
     addTodolistAC,
-    AddTodolistActionType,
+    AddTodolistActionType, fetchTodolistsTC,
     removeTodolistAC,
     RemoveTodolistActionType,
-    setTodolistsAC,
-    SetTodolistsActionType
 } from "./todolists-reducer";
 import {setAppStatusAC} from "../../APP/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../UTILS/error-utils";
@@ -140,7 +138,7 @@ const slice = createSlice({
         builder.addCase(removeTodolistAC, (state, action) => {
             delete state[action.payload.id]
         });
-        builder.addCase(setTodolistsAC, (state, action) => {
+        builder.addCase(fetchTodolistsTC.fulfilled, (state, action) => {
             action.payload.todolists.forEach(tl => {
                 state[tl.id] = []
             })
@@ -164,7 +162,7 @@ const slice = createSlice({
             if (index > -1) {
                 tasks[index] = {...tasks[index], ...action.payload.domainModel}
             }
-        })
+        });
     }
 })
 
@@ -187,4 +185,3 @@ export type TasksStateType = {
 export type ActionsTypesTasksReducer =
      AddTodolistActionType
     | RemoveTodolistActionType
-    | SetTodolistsActionType
