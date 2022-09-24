@@ -99,6 +99,7 @@ export const addTodolistTC = (title: string): ThunkType => {
             })
     }
 }
+
 export const changeTodolistTitleTC = (id: string, title: string): ThunkType => {
     return dispatch => {
         todolistsAPI.updateTodolist(id, title)

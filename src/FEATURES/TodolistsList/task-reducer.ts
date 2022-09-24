@@ -2,9 +2,7 @@ import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelTyp
 import {AppRootStateType} from "../../APP/store";
 import {
     addTodolistAC,
-    AddTodolistActionType, fetchTodolistsTC,
-    removeTodolistAC,
-    RemoveTodolistActionType,
+    AddTodolistActionType, fetchTodolistsTC, removeTodolistTC,
 } from "./todolists-reducer";
 import {setAppStatusAC} from "../../APP/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../UTILS/error-utils";
@@ -135,7 +133,7 @@ const slice = createSlice({
         builder.addCase(addTodolistAC, (state, action) => {
             state[action.payload.todolist.id] = [];
         });
-        builder.addCase(removeTodolistAC, (state, action) => {
+        builder.addCase(removeTodolistTC.fulfilled, (state, action) => {
             delete state[action.payload.id]
         });
         builder.addCase(fetchTodolistsTC.fulfilled, (state, action) => {
@@ -184,4 +182,3 @@ export type TasksStateType = {
 }
 export type ActionsTypesTasksReducer =
      AddTodolistActionType
-    | RemoveTodolistActionType
