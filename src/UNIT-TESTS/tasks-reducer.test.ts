@@ -1,12 +1,10 @@
 import {
-    addTaskTC,
-    fetchTasks,
-    removeTaskTC,
     tasksReducer,
-    TasksStateType, updateTaskTC,
+    TasksStateType,
 } from "../FEATURES/TodolistsList/task-reducer";
 import {TaskPriorities, TaskStatuses} from "../API/todolist-api";
-import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from "../FEATURES/TodolistsList/todolists-reducer";
+import {addTaskTC, fetchTasksTC, removeTaskTC, updateTaskTC} from "../FEATURES/TodolistsList/taskThunks";
+import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from "../FEATURES/TodolistsList/todolistThunks";
 
 
 let startState: TasksStateType = {}
@@ -126,7 +124,7 @@ test('new array should be added when new todolist is added', () => {
     const keys = Object.keys(endState)
     const newKey = keys.find(k => k !== 'todolistId1' && k !== 'todolistId2')
 
-    if (!newKey) throw Error ('new key should be added')
+    if (!newKey) throw Error('new key should be added')
 
     expect(keys.length).toBe(3)
     expect(endState[newKey]).toEqual([])
@@ -145,10 +143,12 @@ test('property with todolistId should be deleted', () => {
 })
 
 test('empty arrays should be added when we set todolists', () => {
-    const todos = {todolists: [
+    const todos = {
+        todolists: [
             {id: '1', title: 'one', order: 1, addedDate: ''},
             {id: '2', title: 'two', order: 2, addedDate: ''},
-        ]};
+        ]
+    };
     const action = fetchTodolistsTC.fulfilled(todos, 'requestID')
 
     const endState = tasksReducer({}, action);
@@ -162,7 +162,10 @@ test('empty arrays should be added when we set todolists', () => {
 
 test('task should be added for todolist', () => {
     // const action = setTasksAC({tasks: startState['todolistId1'], todolistId: 'todolistId1'})
-    const action = fetchTasks.fulfilled({tasks: startState['todolistId1'], todolistId: 'todolistId1'}, '', 'todolistId1')
+    const action = fetchTasksTC.fulfilled({
+        tasks: startState['todolistId1'],
+        todolistId: 'todolistId1'
+    }, '', 'todolistId1')
 
     const ensState = tasksReducer({
         'todolistId2': [],
