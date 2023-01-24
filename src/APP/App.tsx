@@ -11,10 +11,10 @@ import {Route, Routes} from "react-router-dom";
 import {ErrorSnackbar} from "../COMPONENTS/ErrorSnackBar/ErrorSnackbar";
 import {Menu} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "./store";
-import {initialiseAppTC} from "./app-reducer";
 import {logOutTC} from "../FEATURES/Login/auth-reducer";
 import {TodolistsList} from "../FEATURES/TodolistsList/TodolistsList";
 import {Login} from "../FEATURES/Login/Login";
+import {initializeApp} from "./app-reducer";
 
 // import {CircularProgress} from "@mui/material";
 
@@ -26,7 +26,7 @@ function App() {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(initialiseAppTC())
+        dispatch(initializeApp())
     }, [dispatch])
 
     const logOutHandler = useCallback(() => dispatch(logOutTC()), [isLoggedIn, dispatch])
