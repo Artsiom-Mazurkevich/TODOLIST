@@ -57,6 +57,7 @@ const slice = createSlice({
     extraReducers: builder => {
         builder.addCase(initializeApp().type, (state) => {
             if (initializeApp().type) state.isInitialized = true
+            // if (initializeApp().type) state.isInitialized = true
         })
     },
 })
